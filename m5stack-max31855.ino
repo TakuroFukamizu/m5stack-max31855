@@ -27,16 +27,16 @@ void setup() {
 }
 
 void loop() {
-  M5.Display.clear();
+   M5.Display.clear(); // ここを復活させるとエラー
   // thermocouple error
   if (max31855.readThermocoupleTemperature() > 0) {
     // NOTE: M5Stack + M5Unified 使用時に、ここでMAX31855から受信するデータがおかしくなってしまい、誤ってエラー判定になってしまう。
     Serial.println("thermocouple error");
-    M5.Display.drawString("error", 0, 0);
+//     M5.Display.drawString("error", 0, 0);
   } else {
-    M5.Lcd.drawString(
-        String(max31855.thermocoupleTemp, 4),
-        150, 0);
+    // M5.Display.drawString(
+    //     String(max31855.thermocoupleTemp, 4),
+    //     150, 0);
     Serial.println(max31855.thermocoupleTemp);
   }
   M5.update();
