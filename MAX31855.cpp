@@ -40,7 +40,8 @@ int8_t MAX31855::readThermocoupleTemperature() {
       Serial.print("Open Circuit, ");
       return 3;
     }
-    Serial.println("");
+    Serial.println(".");
+    return 4;
   } else {
     if ((thermocouple & 0x8000) == 0) { // 0℃以上
       max31855.thermocoupleTemp = (thermocouple >> 2) * 0.25;
