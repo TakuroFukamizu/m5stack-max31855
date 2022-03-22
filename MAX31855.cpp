@@ -2,15 +2,14 @@
 #include <SPI.h>
 #include "MAX31855.h"
 
+
 int8_t MAX31855::begin(int8_t sck, int8_t miso, int8_t mosi, int8_t slave) {
   pinMode(slave, OUTPUT);
   digitalWrite(slave, HIGH);
   max31855.slave = slave;
+  max31855.spiConfig = SPISettings(SPI_CLOCK_DIV4, MSBFIRST, SPI_MODE0);
 
   SPI.begin(sck, miso, mosi, slave);
-  SPI.setBitOrder(MSBFIRST);
-  SPI.setClockDivider(SPI_CLOCK_DIV4);
-  SPI.setDataMode(SPI_MODE0);
   return 0;
 }
 
@@ -19,12 +18,15 @@ int8_t MAX31855::readThermocoupleTemperature() {
   unsigned int thermocouple;
   // 12 bit internal temperature data + 4 bit
   unsigned int internal;
+
+  SPI.beginTransaction(max31855.spiConfig); // SPI設定適用
   digitalWrite(max31855.slave, LOW);
   thermocouple = (unsigned int)SPI.transfer(0x00) << 8;
   thermocouple |= (unsigned int)SPI.transfer(0x00);
   internal = (unsigned int)SPI.transfer(0x00) << 8;
   internal |= (unsigned int)SPI.transfer(0x00);
   digitalWrite(max31855.slave, HIGH);
+  SPI.endTransaction(); // NOTE: LCDの通信を戻すために必要
 
   if ((thermocouple & 0x0001) != 0) {
     Serial.print("ERROR: ");
