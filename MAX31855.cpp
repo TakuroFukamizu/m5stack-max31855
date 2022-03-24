@@ -8,6 +8,7 @@ int8_t MAX31855::begin(int8_t sck, int8_t miso, int8_t mosi, int8_t slave) {
   digitalWrite(slave, HIGH);
   max31855.slave = slave;
   max31855.spiConfig = SPISettings(SPI_CLOCK_DIV4, MSBFIRST, SPI_MODE0);
+//  max31855.spiConfig = SPISettings(SPI_CLOCK_DIV2, MSBFIRST, SPI_MODE0);
 
   SPI.begin(sck, miso, mosi, slave);
   return 0;
