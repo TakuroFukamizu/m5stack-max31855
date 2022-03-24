@@ -30,20 +30,20 @@ int8_t MAX31855::readThermocoupleTemperature() {
   SPI.endTransaction(); // NOTE: LCDの通信を戻すために必要
 
   if ((thermocouple & 0x0001) != 0) {
-    Serial.print("ERROR: ");
+    // Serial.print("ERROR: ");
     if ((internal & 0x0004) != 0) {
-      Serial.print("Short to Vcc, ");
+      // Serial.print("Short to Vcc, ");
       return 1;
     }
     if ((internal & 0x0002) != 0) {
-      Serial.print("Short to GND, ");
+      // Serial.print("Short to GND, ");
       return 2;
     }
     if ((internal & 0x0001) != 0) {
-      Serial.print("Open Circuit, ");
+      // Serial.print("Open Circuit, ");
       return 3;
     }
-    Serial.println(".");
+    // Serial.println(".");
     return 4;
   } else {
     if ((thermocouple & 0x8000) == 0) { // 0℃以上
